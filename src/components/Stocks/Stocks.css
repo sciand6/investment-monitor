@@ -1,0 +1,107 @@
+.EditModal {
+  background: white;
+  width: 30%;
+  height: 30%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.EditModal > input[type="text"] {
+  width: 75%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.CancelButton {
+  background: red;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.SubmitButton {
+  background: #0275d8;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.EditModalBg {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.AddButton {
+  background: white;
+  padding: 10px 20px;
+  color: #0275d8;
+  font-size: 20px;
+  font-weight: bolder;
+  border: 3px solid #0275d8;
+  border-radius: 20px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.TickerPrice {
+  text-align: center;
+  width: 50%;
+}
+
+.StatusDiv {
+  width: 50%;
+  text-align: center;
+}
+
+.Status {
+  font-size: 24px;
+  margin-bottom: 32px;
+}
+
+.Content {
+  display: flex;
+  justify-content: space-evenly;
+  border-radius: 10px;
+  margin: 15px;
+  color: white;
+  width: 250px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.StockList {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.Price {
+  font-size: 20px;
+}
+
+.InputDiv {
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
+}
