@@ -13,13 +13,15 @@ function StockList() {
   const [option, setOption] = useState("");
   const [editType, setEditType] = useState("");
   const [editStatus, setEditStatus] = useState("");
+  const [getError, setGetError] = useState("");
+  const [postError, setPostError] = useState("");
 
   function getPriceData() {
     fetch(`${BASE_URL}/getStocks`)
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {
-          console.log(data.error);
+          setGetError(data.error);
           return;
         }
 
@@ -51,6 +53,7 @@ function StockList() {
     setEditLower(lower);
     setEditType(type);
     setEditStatus(status);
+    setPostError("");
 
     setModalShow(true);
   }
@@ -66,8 +69,15 @@ function StockList() {
   }
 
   function handleTickerEdit() {
-    if (!editTicker || !editLower || !editUpper || !editTicker || !editStatus) {
-      console.log("Invalid input.");
+    if (
+      !editTicker ||
+      !editLower ||
+      !editUpper ||
+      !editTicker ||
+      !editStatus ||
+      editLower > editUpper
+    ) {
+      setPostError("Invalid input.");
       return;
     }
 
@@ -89,6 +99,10 @@ function StockList() {
       })
         .then((res) => res.json())
         .then((data) => {
+          if (data.error) {
+            setPostError(data.error);
+            return;
+          }
           setModalShow(false);
           getPriceData();
         });
@@ -102,6 +116,10 @@ function StockList() {
       })
         .then((res) => res.json())
         .then((data) => {
+          if (data.error) {
+            setPostError(data.error);
+            return;
+          }
           setModalShow(false);
           getPriceData();
         });
@@ -133,53 +151,58 @@ function StockList() {
         }}
         value="ADD TICKER"
       ></input>
-      <h1>CRYPTO</h1>
-      {cryptoOutput.map((crypto) => {
-        var status = "HOLD";
-        var cardBackground = {
-          background: "#ECA72C",
-        };
-
-        if (crypto.price >= crypto.upper) {
-          status = "SELL";
-          cardBackground = {
-            background: "red",
+      {getError ? <span className="Error">{getError}</span> : ""}
+      <div className="Crypto-Header">CRYPTO</div>
+      <div className="StockList">
+        {cryptoOutput.map((crypto) => {
+          var status = "HOLD";
+          var cardBackground = {
+            background: "#ECA72C",
           };
-        } else if (crypto.price <= crypto.lower) {
-          status = "BUY";
-          cardBackground = {
-            background: "green",
-          };
-        }
 
-        return (
-          <div style={cardBackground} className="Content">
-            <div className="TickerPrice">
-              <h1>{crypto.ticker}</h1>
-              <p className="Price">{crypto.price}</p>
+          if (crypto.price >= crypto.upper) {
+            status = "SELL";
+            cardBackground = {
+              background: "red",
+            };
+          } else if (crypto.price <= crypto.lower) {
+            status = "BUY";
+            cardBackground = {
+              background: "green",
+            };
+          }
+
+          return (
+            <div style={cardBackground} className="Content">
+              <div className="TickerPrice">
+                <h1>{crypto.ticker}</h1>
+                <p className="Price">{crypto.price}</p>
+              </div>
+              <div className="StatusDiv">
+                <p className="Status">{status}</p>
+                <MdDelete onClick={() => deleteTicker(crypto.ticker)} />
+                &nbsp;&nbsp;
+                <MdEdit
+                  onClick={() => {
+                    setOption("Edit");
+                    showModal(
+                      crypto.ticker,
+                      crypto.upper,
+                      crypto.lower,
+                      crypto.type,
+                      crypto.status
+                    );
+                  }}
+                />
+                <p>
+                  {crypto.status === "bought" ? "Should Sell" : "Should Buy"}
+                </p>
+              </div>
             </div>
-            <div className="StatusDiv">
-              <p className="Status">{status}</p>
-              <MdDelete onClick={() => deleteTicker(crypto.ticker)} />
-              &nbsp;&nbsp;
-              <MdEdit
-                onClick={() => {
-                  setOption("Edit");
-                  showModal(
-                    crypto.ticker,
-                    crypto.upper,
-                    crypto.lower,
-                    crypto.type,
-                    crypto.status
-                  );
-                }}
-              />
-              <p>{crypto.status === "bought" ? "Should Sell" : "Should Buy"}</p>
-            </div>
-          </div>
-        );
-      })}
-      <h1>STOCKS</h1>
+          );
+        })}
+      </div>
+      <div className="Stock-Header">STONKS</div>
       <div className="StockList">
         {tickerOutput.map((out) => {
           var status = "HOLD";
@@ -230,6 +253,7 @@ function StockList() {
       {modalShow ? (
         <div className="EditModalBg">
           <div className="EditModal">
+            {postError ? <span className="Error">{postError}</span> : ""}
             {option === "Add" ? (
               <input
                 type="text"

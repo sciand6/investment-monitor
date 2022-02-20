@@ -1,3 +1,17 @@
 .App {
   text-align: center;
 }
+
+.Header {
+  text-align: center;
+  color: #48aee6;
+  box-shadow: 0 4px 4px rgb(0, 0, 0, 0.2);
+}
+
+.Header-Text {
+  font-style: italic;
+  font-size: xx-large;
+  font-weight: 600;
+  font-family: "Rowdies", cursive;
+  padding: 10px;
+}
